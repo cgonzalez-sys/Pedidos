@@ -409,47 +409,8 @@
 
   .btn-nuevo:hover { background: var(--naranja); color: var(--negro); }
 
-  /* REGISTRO */
-  .registro-screen {
-    padding: 28px 20px;
-    animation: fadeIn 0.3s ease;
-  }
-
-  .registro-intro {
-    font-size: 13px;
-    color: #aaa;
-    line-height: 1.6;
-    margin-bottom: 24px;
-    border-left: 3px solid var(--cyan);
-    padding-left: 12px;
-  }
-
-  .perfil-badge {
-    background: #2a2a2a;
-    border: 1px solid var(--verde);
-    padding: 14px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .perfil-info { font-size: 14px; line-height: 1.6; }
-  .perfil-info strong { color: var(--verde); }
-
-  .btn-editar {
-    background: transparent;
-    border: 1px solid #555;
-    color: #888;
-    font-size: 11px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  .btn-editar:hover { border-color: var(--naranja); color: var(--naranja); }
+  /* MENU PREVIEW */
+  .menu-day-label {
     font-size: 10px;
     letter-spacing: 2px;
     color: #666;
@@ -481,46 +442,19 @@
   <button class="tipo-btn" onclick="setTipo('empresarial')">EMPRESARIAL</button>
 </div>
 
-<!-- REGISTRO INICIAL -->
-<div id="sec-registro" class="registro-screen" style="display:none;">
-  <div class="section-title">PRIMER ACCESO</div>
-  <div class="registro-intro">
-    Solo la primera vez necesitamos tus datos. A partir de ahora se completarán automáticamente cada vez que abras el formulario desde este dispositivo.
-  </div>
-  <div class="field-group">
-    <div class="field">
-      <label>Tu número de teléfono</label>
-      <input type="tel" id="reg-telefono" placeholder="Ej. 8091234567">
-    </div>
-    <div class="field">
-      <label>Tu nombre</label>
-      <input type="text" id="reg-nombre" placeholder="Ej. Sr. Luis García">
-    </div>
-    <div class="field">
-      <label>Empresa</label>
-      <select id="reg-empresa" onchange="autocompletarRegistro(this.value)">
-        <option value="">-- Selecciona tu empresa --</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Ubicación de entrega</label>
-      <input type="text" id="reg-ubicacion" placeholder="Se completa automáticamente" readonly style="opacity:0.6;">
-    </div>
-  </div>
-  <button class="btn-submit" onclick="guardarRegistro()">GUARDAR Y CONTINUAR</button>
-</div>
-
 <!-- FORM EJECUTIVO -->
 <div class="section visible" id="sec-ejecutivo">
 
   <div class="section-title">DATOS DEL CLIENTE</div>
-  <div id="perfil-badge" class="perfil-badge">
-    <div class="perfil-info">
-      <strong id="perfil-nombre"></strong><br>
-      <span id="perfil-empresa" style="color:#aaa;font-size:12px;"></span><br>
-      <span id="perfil-ubicacion" style="color:#666;font-size:11px;"></span>
+  <div class="field-group">
+    <div class="field">
+      <label>Nombre completo</label>
+      <input type="text" id="ej-nombre" placeholder="Ej. Sr. Luis García">
     </div>
-    <button class="btn-editar" onclick="editarPerfil()">Editar</button>
+    <div class="field">
+      <label>Empresa</label>
+      <input type="text" id="ej-empresa" placeholder="Nombre de la empresa">
+    </div>
   </div>
 
   <div class="section-title">SERVICIO</div>
@@ -530,17 +464,14 @@
   </div>
 
   <div class="section-title">DÍA DE LA SEMANA</div>
-  <div id="msg-corte" style="display:none; background:#2a1a1a; border:1px solid var(--naranja); color:var(--naranja); font-size:12px; padding:10px 14px; margin-bottom:12px; letter-spacing:1px;">
-    Pedido cerrado. Contacta al representante por WhatsApp.
-  </div>
   <div class="dias-grid">
-    <button class="dia-btn" data-dia="13" onclick="selectDia(this, 13)"><span class="num">13</span>LUN</button>
-    <button class="dia-btn" data-dia="14" onclick="selectDia(this, 14)"><span class="num">14</span>MAR</button>
-    <button class="dia-btn" data-dia="15" onclick="selectDia(this, 15)"><span class="num">15</span>MIÉ</button>
-    <button class="dia-btn" data-dia="16" onclick="selectDia(this, 16)"><span class="num">16</span>JUE</button>
-    <button class="dia-btn" data-dia="17" onclick="selectDia(this, 17)"><span class="num">17</span>VIE</button>
-    <button class="dia-btn" data-dia="18" onclick="selectDia(this, 18)"><span class="num">18</span>SÁB</button>
-    <button class="dia-btn" data-dia="19" onclick="selectDia(this, 19)"><span class="num">19</span>DOM</button>
+    <button class="dia-btn" onclick="selectDia(this, 13)"><span class="num">13</span>LUN</button>
+    <button class="dia-btn" onclick="selectDia(this, 14)"><span class="num">14</span>MAR</button>
+    <button class="dia-btn" onclick="selectDia(this, 15)"><span class="num">15</span>MIÉ</button>
+    <button class="dia-btn" onclick="selectDia(this, 16)"><span class="num">16</span>JUE</button>
+    <button class="dia-btn" onclick="selectDia(this, 17)"><span class="num">17</span>VIE</button>
+    <button class="dia-btn" onclick="selectDia(this, 18)"><span class="num">18</span>SÁB</button>
+    <button class="dia-btn" onclick="selectDia(this, 19)"><span class="num">19</span>DOM</button>
   </div>
 
   <div id="opciones-container">
@@ -613,8 +544,6 @@
 <script>
   const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyMdVV_WjKACuIeTXSrIQWE4PDK-sPjHxnO1ZmIGvIaTDKCOBWQ53l9BEAIKI1qSl08/exec';
 
-  let enviando = false;
-
   async function enviarASheet(payload) {
     try {
       await fetch(SHEET_URL, {
@@ -626,245 +555,6 @@
     } catch(e) {
       console.error('Error enviando a Sheet:', e);
     }
-  }
-
-  // CLIENTES DATA
-  const clientes = [
-    {nombre:'CERVECERIA', empresa:'AB INBEV', ubicacion:'CENTRO DISTRIBUCION,VERON'},
-    {nombre:'SR. JEUDY', empresa:'ANEUDY', ubicacion:'RETIRA EN LOCAL'},
-    {nombre:'TAURUS BAVARO', empresa:'TAURUS', ubicacion:'RETIRO LOCAL'},
-    {nombre:'TAURUS CAP CANA', empresa:'MINIARIS', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'AGENTES/APROCAP', empresa:'APROCAP', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SR.JEREMIAS', empresa:'APROCAP', ubicacion:'SUPERVISORES'},
-    {nombre:'CONTROL DE ACCESO', empresa:'APROCAP', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'OPERATIVO HORAS EXTRAS', empresa:'APROCAP', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'BOMBEROS', empresa:'APROCAP', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SRTA. JULIANA', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SR. GERSON', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SR. JUAN PEREZ', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SRA. BRENDA', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SR. KELVIN', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SR. WARLYN', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SR. WILLIAN', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SR. MANUEL J.', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SRTA. ISMELDA', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SRTA. LUCY', empresa:'TECHNO TURF', ubicacion:'AV. BARCELO'},
-    {nombre:'SR. GELSON', empresa:'TECHNO TURF', ubicacion:'AV. BARCELO'},
-    {nombre:'SRTA. JELISA', empresa:'TECHNO TURF', ubicacion:'AV. BARCELO'},
-    {nombre:'SR. DIRECCION TALLER', empresa:'TECHNO TURF', ubicacion:'AV. BARCELO'},
-    {nombre:'SR. MECANICA', empresa:'TECHNO TURF', ubicacion:'AV. BARCELO'},
-    {nombre:'SR. ESTARLIN', empresa:'TECHNO TURF', ubicacion:'AV. BARCELO'},
-    {nombre:'SR. JOSE MECNICA', empresa:'TECHNO TURF', ubicacion:'AV. BARCELO'},
-    {nombre:'SRTA. BRENSI', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SR. ORLANDO', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SR. JOSE RAMON', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'BOMBEROS', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SUPERVISORES', empresa:'APROCAP/CDA', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'RAMON MANTENIMIENTO', empresa:'APROCAP/MMTTO', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'SRTA. KATHERINE', empresa:'ARS RESERVAS', ubicacion:'SEGUNDO PISO RESERVAS VILLAGE'},
-    {nombre:'CABAÑA', empresa:'CABAÑA', ubicacion:'PICKUP'},
-    {nombre:'YARIBEL', empresa:'CAFETERIA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'MAGEN', empresa:'CAFETERIA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'ALEXANDRA', empresa:'CAFETERIA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SRTA. REIMY', empresa:'CAFETERIA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SRTA. ADA', empresa:'CAFETERIA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'YALENI', empresa:'CERVECERIA DOM.', ubicacion:'CENTRO DISTRIBUCION,VERON'},
-    {nombre:'ING. MIGUEL HERNANDEZ', empresa:'SUPER TECHOS', ubicacion:'TAKE OUT'},
-    {nombre:'SRTA. YARIBEL', empresa:'CAFETERIA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SRTA. ALEXANDRA', empresa:'CAFETERIA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SRTA. LUZ', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SR. NICOLAS', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SRTA. MABEL', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SRTA. ANDREINA', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SR. DERHEK', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SR. FRAY', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SR. JONEL', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SR. ISABEL', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SR.JOAN', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'CASA DON LUIS', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SR. DOMINGO', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SRTA. ROSSY', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SR. NEIL', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SRTA. WILMERY', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SR. LEANDRO BELLO', empresa:'CASA DON LUIS', ubicacion:'FISHING LODGE'},
-    {nombre:'SR. REY ROSENDO', empresa:'CLIENTE FRIPICK', ubicacion:'SEGUROS RESERVAS VILLAGE'},
-    {nombre:'SRTA. NICOLE', empresa:'CLIENTE FRIPICK', ubicacion:'SEGUROS RESERVAS'},
-    {nombre:'SR. IGNACIO', empresa:'COND. VERMARES', ubicacion:'LAS IGUANAS, CAP CANA'},
-    {nombre:'SR. KEVIN', empresa:'COND. VISTA ALTA', ubicacion:'LAS IGUANAS, CAP CANA'},
-    {nombre:'SRA. YANIRE', empresa:'CONDOMINIO', ubicacion:'GREEN VILLAGE'},
-    {nombre:'GV SEGURIDAD 2', empresa:'CONDOMINIO', ubicacion:'GREEN VILLAGE'},
-    {nombre:'GV OFICINA', empresa:'CONDOMINIO', ubicacion:'GREEN VILLAGE'},
-    {nombre:'GV SEGURIDAD 1', empresa:'CONDOMINO', ubicacion:'GREEN VILLAGE'},
-    {nombre:'DUPLA', empresa:'CONST. DUPLA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'CONSTRUVESA', empresa:'CONSTRUVESA', ubicacion:'RETIRA EN LOCAL'},
-    {nombre:'SRTA. YOKAIRA', empresa:'FLOTANTE', ubicacion:'FISHING LODGE'},
-    {nombre:'CLIENTE FRIPICK', empresa:'FRI PICK', ubicacion:'INVESTIGAR LUGAR ENTREGA'},
-    {nombre:'SRTA. LAURA PACHE', empresa:'FRIPICK', ubicacion:'SEGUROS RESERVAS VILLAGE'},
-    {nombre:'SRA. CRISLEIDI PEREZ', empresa:'FRIPICK', ubicacion:'SEGUROS RESERVAS VILLAGE'},
-    {nombre:'SR. ENMANUEL MEDINA', empresa:'FRIPICK', ubicacion:'SEGUROS RESERVAS VILLAGE'},
-    {nombre:'SRTA. JENNIFER', empresa:'FRIPICK', ubicacion:'SEGUROS RESERVAS VILLAGE'},
-    {nombre:'SR. LUIS', empresa:'FRIPICK', ubicacion:'SEGUROS RESERVAS VILLAGE'},
-    {nombre:'SRTA. WANDERLYN', empresa:'FRIPICK', ubicacion:'SEGUROS RESERVAS VILLAGE'},
-    {nombre:'SRTA. MARGY', empresa:'FRIPICK', ubicacion:'SEGUROS RESERVA'},
-    {nombre:'SR. MIGUEL PEÑA', empresa:'HOTEL BOUTIQUE', ubicacion:'FISHING LODGE'},
-    {nombre:'SR. SILVESTRE', empresa:'HOTEL BOUTIQUE', ubicacion:'FISHING LODGE'},
-    {nombre:'SR. JAIRO', empresa:'JAIRO AIRE', ubicacion:'RETIRA EN LOCAL'},
-    {nombre:'SR. RUBINOS', empresa:'LIMPIEZA/PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'LITERAL', empresa:'LITERAL', ubicacion:'MOON PALACE'},
-    {nombre:'MALESPIN', empresa:'MALESPIN', ubicacion:'MOON PALACE'},
-    {nombre:'SEGURIDAD FASE', empresa:'MINIARIS', ubicacion:'FASE 3, 1ER NIVEL'},
-    {nombre:'SR. LUIS CAP CANA', empresa:'MINIARIS', ubicacion:'FASE 3, 3ER NIVEL'},
-    {nombre:'TAURUS MINIARIS', empresa:'MINIARIS', ubicacion:'CONTROL DE ACCESO'},
-    {nombre:'ING. LAURA MARIE', empresa:'TRS', ubicacion:'FISHING LODGE'},
-    {nombre:'SRTA. YADIRA RUIZ', empresa:'GAL', ubicacion:'BOULEVARD PUNTA CANA'},
-    {nombre:'SR. RANDY', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'ING. ENRIQUE', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. ERBIDO', empresa:'KEICHER', ubicacion:'LOS ESTABLOS'},
-    {nombre:'SR. MAURICIO', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. ARMANDO LIO', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. GARCIA', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. RUBEN HERMANO', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. CHOCO', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'CAFETERIA PLAYA SERENA', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. ETHIEN', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. RENIEL', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'ENC. SEGURIDAD', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. MARCOS', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. JUAN DE DIOS', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. ANEUDI', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. CIBAO', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. JOHAN', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. FERNANDO', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. ALEXIS', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. JOEL RAMON', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. TOLENTINO', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. ARISMENDY', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. JASON CUBICACION', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. ROBERTO', empresa:'PLAYA SERENA', ubicacion:'PORTO VALENCIA'},
-    {nombre:'SR. FRANK', empresa:'PMS', ubicacion:'SERENA VILLAGE'},
-    {nombre:'SRA. CAROLINA', empresa:'POWERFIT', ubicacion:'MARINA CAP CANA'},
-    {nombre:'SR. JAIRO', empresa:'REFRIGERACION JAIRO', ubicacion:'SOLAR AL LADO'},
-    {nombre:'SR. JERISON', empresa:'SINERCON', ubicacion:'RETIRA EN LOCAL'},
-    {nombre:'SR. YURMAN', empresa:'SINERCON', ubicacion:'RETIRA EN LOCAL'},
-    {nombre:'SR. CARLOS CUBIK', empresa:'SR. CARLOS', ubicacion:'GAL BUSSINESS'},
-    {nombre:'TECNO TURF', empresa:'TECNO TURF', ubicacion:'AVENIDA BARCELO'},
-    {nombre:'SRTA. JELISSA', empresa:'TECNO TURF', ubicacion:'AVENIDA BARCELO'},
-    {nombre:'SR. VICTOR SANZ', empresa:'TECNO TURF', ubicacion:'AVENIDA BARCELO'},
-    {nombre:'DIRECCION TALLER', empresa:'TECNO TURF', ubicacion:'AVENIDA BARCELO'},
-    {nombre:'SR. NEFTALI', empresa:'TECNO TURF', ubicacion:'AVENIDA BARCELO'},
-    {nombre:'SR. JR', empresa:'TECNO TURF', ubicacion:'AVENIDA BARCELO'},
-    {nombre:'SRTA. CORAZONES', empresa:'TECNO TURF', ubicacion:'AVENIDA BARCELO'},
-    {nombre:'SR. JONATHAN', empresa:'TIENDA SUN RIDE', ubicacion:'PLAZA GREEN VILLAGE'},
-    {nombre:'SR. CARLOS', empresa:'TIENDA SUN RIDE', ubicacion:'PLAZA GREEN VILLAGE'},
-    {nombre:'SRTA. MARIEL', empresa:'VECINA', ubicacion:'PICKUP'},
-    {nombre:'SR. DANIEL', empresa:'VISTA ALTA', ubicacion:'VISTA ALTA'},
-    {nombre:'SR. JOSE GARCIA', empresa:'VMO', ubicacion:'DOMINGO MAIZ'}
-  ];
-
-  // REGISTRO Y PERFIL
-  let perfil = null;
-
-  function poblarEmpresasEn(selectId) {
-    const sel = document.getElementById(selectId);
-    const empresasUnicas = [...new Set(clientes.filter(c => c.empresa && c.empresa !== 'NULO').map(c => c.empresa))].sort();
-    empresasUnicas.forEach(emp => {
-      const opt = document.createElement('option');
-      opt.value = emp;
-      opt.textContent = emp;
-      sel.appendChild(opt);
-    });
-  }
-
-  function autocompletarRegistro(empresa) {
-    const cliente = clientes.find(c => c.empresa === empresa);
-    document.getElementById('reg-ubicacion').value = cliente ? cliente.ubicacion : '';
-  }
-
-  function autocompletarEjecutivo(empresa) {
-    const cliente = clientes.find(c => c.empresa === empresa);
-    if (cliente) document.getElementById('ej-ubicacion').value = cliente.ubicacion;
-  }
-
-  function guardarRegistro() {
-    const tel = document.getElementById('reg-telefono').value.trim();
-    const nombre = document.getElementById('reg-nombre').value.trim();
-    const empresa = document.getElementById('reg-empresa').value.trim();
-    const ubicacion = document.getElementById('reg-ubicacion').value.trim();
-    if (!tel) { alert('Por favor ingresa tu número de teléfono.'); return; }
-    if (!nombre) { alert('Por favor ingresa tu nombre.'); return; }
-    if (!empresa) { alert('Por favor selecciona tu empresa.'); return; }
-
-    perfil = { telefono: tel, nombre, empresa, ubicacion };
-    localStorage.setItem('konk_perfil', JSON.stringify(perfil));
-    mostrarFormulario();
-  }
-
-  function mostrarFormulario() {
-    document.getElementById('perfil-nombre').textContent = perfil.nombre;
-    document.getElementById('perfil-empresa').textContent = perfil.empresa;
-    document.getElementById('perfil-ubicacion').textContent = perfil.ubicacion;
-    document.getElementById('sec-registro').style.display = 'none';
-    document.getElementById('sec-ejecutivo').classList.add('visible');
-    aplicarBloqueos();
-  }
-
-  function editarPerfil() {
-    document.getElementById('sec-ejecutivo').classList.remove('visible');
-    document.getElementById('reg-telefono').value = perfil.telefono || '';
-    document.getElementById('reg-nombre').value = perfil.nombre || '';
-    document.getElementById('reg-ubicacion').value = perfil.ubicacion || '';
-    const sel = document.getElementById('reg-empresa');
-    for (let i = 0; i < sel.options.length; i++) {
-      if (sel.options[i].value === perfil.empresa) { sel.selectedIndex = i; break; }
-    }
-    document.getElementById('sec-registro').style.display = 'block';
-  }
-
-  function iniciarApp() {
-    poblarEmpresasEn('reg-empresa');
-    const guardado = localStorage.getItem('konk_perfil');
-    if (guardado) {
-      perfil = JSON.parse(guardado);
-      mostrarFormulario();
-    } else {
-      document.getElementById('sec-registro').style.display = 'block';
-      document.getElementById('sec-ejecutivo').classList.remove('visible');
-    }
-  }
-
-  iniciarApp();
-
-  // HORA DE CORTE - 5:00 PM dia anterior
-  const diasFecha = { 13: '2026-04-13', 14: '2026-04-14', 15: '2026-04-15', 16: '2026-04-16', 17: '2026-04-17', 18: '2026-04-18', 19: '2026-04-19' };
-
-  function diaDisponible(dia) {
-    const ahora = new Date();
-    const fechaDia = new Date(diasFecha[dia] + 'T17:00:00-04:00');
-    const corte = new Date(fechaDia.getTime() - 24 * 60 * 60 * 1000);
-    return ahora < corte;
-  }
-
-  function aplicarBloqueos() {
-    document.querySelectorAll('.dia-btn').forEach(btn => {
-      const dia = parseInt(btn.getAttribute('data-dia'));
-      if (!diaDisponible(dia)) {
-        btn.disabled = true;
-        btn.style.opacity = '0.35';
-        btn.style.cursor = 'not-allowed';
-        btn.style.borderColor = '#333';
-        btn.title = 'Pedido cerrado';
-        btn.onclick = function() {
-          mostrarMensajeCorte();
-          return false;
-        };
-      }
-    });
-  }
-
-  function mostrarMensajeCorte() {
-    const msg = document.getElementById('msg-corte');
-    msg.style.display = 'block';
-    setTimeout(() => { msg.style.display = 'none'; }, 3500);
   }
 
   // MENÚ DATA
@@ -1025,13 +715,12 @@
   }
 
   async function submitEjecutivo() {
-    if (enviando) return;
-    if (!perfil) { alert('Por favor completa tu registro primero.'); return; }
+    const nombre = document.getElementById('ej-nombre').value.trim();
+    const empresa = document.getElementById('ej-empresa').value.trim();
+    if (!nombre) { alert('Por favor ingresa tu nombre.'); return; }
+    if (!empresa) { alert('Por favor ingresa tu empresa.'); return; }
     if (!state.dia) { alert('Por favor selecciona un día.'); return; }
     if (!state.opcion) { alert('Por favor selecciona una opción del menú.'); return; }
-
-    enviando = true;
-    document.querySelectorAll('.btn-submit').forEach(b => { b.disabled = true; b.textContent = 'ENVIANDO...'; });
 
     const menu = state.servicio === 'almuerzo' ? menuAlmuerzo : menuCena;
     const items = menu[state.dia][state.opcion - 1].items.join(', ');
@@ -1039,20 +728,17 @@
 
     await enviarASheet({
       tipo: 'Ejecutivo',
-      nombre: perfil.nombre,
-      empresa: perfil.empresa,
+      nombre: nombre,
+      empresa: empresa,
       servicio: state.servicio === 'almuerzo' ? 'Almuerzo' : 'Cena',
       dia: diasNombres[state.dia],
       opcion: 'Opción 0' + state.opcion,
       detalle: items,
-      observaciones: obs + (perfil.ubicacion ? ' | Entrega: ' + perfil.ubicacion : '') + ' | Tel: ' + perfil.telefono
+      observaciones: obs
     });
 
-    enviando = false;
-    document.querySelectorAll('.btn-submit').forEach(b => { b.disabled = false; b.textContent = 'CONFIRMAR PEDIDO'; });
-
     document.getElementById('success-msg').innerHTML =
-      `<strong>${perfil.nombre}</strong> de ${perfil.empresa}<br>
+      `<strong>${nombre}</strong> de ${empresa}<br>
        ${state.servicio === 'almuerzo' ? 'Almuerzo' : 'Cena'} · ${diasNombres[state.dia]}<br>
        Opción 0${state.opcion}: ${items}
        ${obs ? '<br><em>' + obs + '</em>' : ''}`;
@@ -1061,16 +747,12 @@
   }
 
   async function submitEmpresarial() {
-    if (enviando) return;
     const empresa = document.getElementById('em-empresa').value.trim();
     const responsable = document.getElementById('em-responsable').value.trim();
     if (!empresa) { alert('Por favor ingresa la empresa.'); return; }
     if (!responsable) { alert('Por favor ingresa el nombre del responsable.'); return; }
     if (!state.diaEm) { alert('Por favor selecciona un día.'); return; }
     const obs = document.getElementById('em-obs').value.trim();
-
-    enviando = true;
-    document.querySelectorAll('.btn-submit').forEach(b => { b.disabled = true; b.textContent = 'ENVIANDO...'; });
 
     await enviarASheet({
       tipo: 'Empresarial',
@@ -1082,9 +764,6 @@
       detalle: 'Menú Empresarial',
       observaciones: obs
     });
-
-    enviando = false;
-    document.querySelectorAll('.btn-submit').forEach(b => { b.disabled = false; b.textContent = 'CONFIRMAR PEDIDO'; });
 
     document.getElementById('success-msg').innerHTML =
       `<strong>${empresa}</strong> – Resp: ${responsable}<br>
@@ -1102,6 +781,8 @@
   }
 
   function resetForm() {
+    document.getElementById('ej-nombre').value = '';
+    document.getElementById('ej-empresa').value = '';
     document.getElementById('ej-obs').value = '';
     document.getElementById('em-empresa').value = '';
     document.getElementById('em-responsable').value = '';
@@ -1112,11 +793,7 @@
     state.dia = null; state.opcion = null; state.diaEm = null; state.cantidad = 1;
     document.getElementById('cant-display').textContent = '1';
     document.getElementById('success').classList.remove('visible');
-    if (perfil) {
-      mostrarFormulario();
-    } else {
-      document.getElementById('sec-registro').style.display = 'block';
-    }
+    setTipo(state.tipo);
   }
 </script>
 </body>
