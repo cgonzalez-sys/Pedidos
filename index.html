@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konk Kónk – Hoja de Pedidos</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap');
+
+  :root {
+    --negro: #1C1C1C;
+    --naranja: #F03C00;
+    --verde: #C1FF29;
+    --cyan: #3BF5E5;
+    --azul: #004A5B;
+    --blanco: #F5F5F0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--negro);
+    color: var(--blanco);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--negro);
+    border-bottom: 3px solid var(--naranja);
+    padding: 28px 24px 20px;
+    text-align: center;
+    position: relative;
+  }
+
+  .logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 3px;
+    color: var(--naranja);
+    line-height: 1;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    letter-spacing: 8px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .semana-badge {
+    display: inline-block;
+    margin-top: 14px;
+    background: var(--azul);
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+    text-transform: uppercase;
+  }
+
+  /* TIPO SELECTOR */
+  .tipo-selector {
+    display: flex;
+    gap: 0;
+    margin: 28px 20px 0;
+    border: 2px solid var(--naranja);
+  }
+
+  .tipo-btn {
+    flex: 1;
+    padding: 14px;
+    background: transparent;
+    border: none;
+    color: var(--blanco);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    border-right: 2px solid var(--naranja);
+  }
+
+  .tipo-btn:last-child { border-right: none; }
+
+  .tipo-btn.active {
+    background: var(--naranja);
+    color: var(--negro);
+  }
+
+  /* FORM SECTIONS */
+  .section {
+    display: none;
+    padding: 0 20px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .section.visible { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--verde);
+    letter-spacing: 2px;
+    margin: 28px 0 16px;
+    border-left: 4px solid var(--verde);
+    padding-left: 12px;
+  }
+
+  /* FORM FIELDS */
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cyan);
+  }
+
+  input[type="text"], select {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 0;
+    color: var(--blanco);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    padding: 12px 14px;
+    width: 100%;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input[type="text"]:focus, select:focus {
+    outline: none;
+    border-color: var(--naranja);
+  }
+
+  select option { background: #1C1C1C; }
+
+  /* DIA SELECTOR */
+  .dias-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .dia-btn {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    color: var(--blanco);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 10px 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+
+  .dia-btn span.num {
+    display: block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--naranja);
+    margin-bottom: 2px;
+  }
+
+  .dia-btn.selected {
+    background: var(--naranja);
+    border-color: var(--naranja);
+    color: var(--negro);
+  }
+
+  .dia-btn.selected span.num { color: var(--negro); }
+
+  /* OPCIONES CARDS */
+  .opciones-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 10px;
+  }
+
+  .opciones-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .opcion-card {
+    background: #2a2a2a;
+    border: 2px solid #444;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .opcion-card:hover { border-color: var(--naranja); }
+
+  .opcion-card.selected {
+    border-color: var(--verde);
+    background: rgba(193,255,41,0.08);
+  }
+
+  .opcion-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--naranja);
+    line-height: 1;
+  }
+
+  .opcion-card.selected .opcion-num { color: var(--verde); }
+
+  .opcion-items {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .opcion-card.selected .opcion-items { color: var(--blanco); }
+
+  .check-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background: var(--verde);
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--negro);
+    font-weight: 700;
+  }
+
+  .opcion-card.selected .check-icon { display: flex; }
+
+  /* SERVICIO SELECTOR */
+  .servicio-selector {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    border: 1px solid #444;
+  }
+
+  .serv-btn {
+    flex: 1;
+    padding: 12px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid #444;
+    color: #888;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .serv-btn:last-child { border-right: none; }
+  .serv-btn.active { background: var(--azul); color: var(--cyan); }
+
+  /* EMPRESARIAL CANTIDAD */
+  .cantidad-control {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 24px;
+    border: 1px solid #444;
+    width: fit-content;
+  }
+
+  .cant-btn {
+    background: #2a2a2a;
+    border: none;
+    color: var(--blanco);
+    font-size: 24px;
+    width: 52px;
+    height: 52px;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  .cant-btn:hover { background: var(--naranja); color: var(--negro); }
+
+  .cant-display {
+    width: 80px;
+    height: 52px;
+    background: #1a1a1a;
+    border-left: 1px solid #444;
+    border-right: 1px solid #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--verde);
+  }
+
+  /* OBSERVACIONES */
+  textarea {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    color: var(--blanco);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 12px 14px;
+    width: 100%;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.2s;
+    margin-bottom: 28px;
+  }
+
+  textarea:focus { outline: none; border-color: var(--naranja); }
+
+  /* SUBMIT */
+  .btn-submit {
+    width: 100%;
+    padding: 18px;
+    background: var(--naranja);
+    border: none;
+    color: var(--negro);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 10px;
+  }
+
+  .btn-submit:hover { background: #ff4a0a; }
+  .btn-submit:active { transform: scale(0.99); }
+
+  /* SUCCESS */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 30px;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .success-screen.visible { display: block; }
+
+  .success-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+  }
+
+  .success-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--verde);
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+  }
+
+  .success-msg {
+    color: #aaa;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .btn-nuevo {
+    display: inline-block;
+    padding: 14px 36px;
+    border: 2px solid var(--naranja);
+    color: var(--naranja);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.2s;
+  }
+
+  .btn-nuevo:hover { background: var(--naranja); color: var(--negro); }
+
+  /* MENU PREVIEW */
+  .menu-day-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .no-menu {
+    color: #555;
+    font-size: 13px;
+    padding: 16px;
+    border: 1px dashed #333;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-text">KONK KÓNK</div>
+  <div class="logo-sub">Punta Cana</div>
+  <div class="semana-badge">Semana 13 – 19 Abr. 2026</div>
+</div>
+
+<!-- TIPO CLIENTE -->
+<div class="tipo-selector">
+  <button class="tipo-btn active" onclick="setTipo('ejecutivo')">EJECUTIVO</button>
+  <button class="tipo-btn" onclick="setTipo('empresarial')">EMPRESARIAL</button>
+</div>
+
+<!-- FORM EJECUTIVO -->
+<div class="section visible" id="sec-ejecutivo">
+
+  <div class="section-title">DATOS DEL CLIENTE</div>
+  <div class="field-group">
+    <div class="field">
+      <label>Nombre completo</label>
+      <input type="text" id="ej-nombre" placeholder="Ej. Sr. Luis García">
+    </div>
+    <div class="field">
+      <label>Empresa</label>
+      <input type="text" id="ej-empresa" placeholder="Nombre de la empresa">
+    </div>
+  </div>
+
+  <div class="section-title">SERVICIO</div>
+  <div class="servicio-selector">
+    <button class="serv-btn active" onclick="setServicio('almuerzo', this)">Almuerzo</button>
+    <button class="serv-btn" onclick="setServicio('cena', this)">Cena</button>
+  </div>
+
+  <div class="section-title">DÍA DE LA SEMANA</div>
+  <div class="dias-grid">
+    <button class="dia-btn" onclick="selectDia(this, 13)"><span class="num">13</span>LUN</button>
+    <button class="dia-btn" onclick="selectDia(this, 14)"><span class="num">14</span>MAR</button>
+    <button class="dia-btn" onclick="selectDia(this, 15)"><span class="num">15</span>MIÉ</button>
+    <button class="dia-btn" onclick="selectDia(this, 16)"><span class="num">16</span>JUE</button>
+    <button class="dia-btn" onclick="selectDia(this, 17)"><span class="num">17</span>VIE</button>
+    <button class="dia-btn" onclick="selectDia(this, 18)"><span class="num">18</span>SÁB</button>
+    <button class="dia-btn" onclick="selectDia(this, 19)"><span class="num">19</span>DOM</button>
+  </div>
+
+  <div id="opciones-container">
+    <div class="no-menu">Selecciona un día para ver las opciones del menú.</div>
+  </div>
+
+  <div class="field" style="margin-bottom:20px;">
+    <label>Observaciones (opcional)</label>
+    <textarea id="ej-obs" placeholder="Alergias, preferencias especiales..."></textarea>
+  </div>
+
+  <button class="btn-submit" onclick="submitEjecutivo()">CONFIRMAR PEDIDO</button>
+</div>
+
+<!-- FORM EMPRESARIAL -->
+<div class="section" id="sec-empresarial">
+
+  <div class="section-title">DATOS DE LA EMPRESA</div>
+  <div class="field-group">
+    <div class="field">
+      <label>Empresa</label>
+      <input type="text" id="em-empresa" placeholder="Nombre de la empresa">
+    </div>
+    <div class="field">
+      <label>Responsable / Supervisor</label>
+      <input type="text" id="em-responsable" placeholder="Nombre del supervisor">
+    </div>
+  </div>
+
+  <div class="section-title">SERVICIO</div>
+  <div class="servicio-selector">
+    <button class="serv-btn active" onclick="setServicioEm('almuerzo', this)">Almuerzo</button>
+    <button class="serv-btn" onclick="setServicioEm('cena', this)">Cena</button>
+  </div>
+
+  <div class="section-title">DÍA DE LA SEMANA</div>
+  <div class="dias-grid">
+    <button class="dia-btn" onclick="selectDiaEm(this, 13)"><span class="num">13</span>LUN</button>
+    <button class="dia-btn" onclick="selectDiaEm(this, 14)"><span class="num">14</span>MAR</button>
+    <button class="dia-btn" onclick="selectDiaEm(this, 15)"><span class="num">15</span>MIÉ</button>
+    <button class="dia-btn" onclick="selectDiaEm(this, 16)"><span class="num">16</span>JUE</button>
+    <button class="dia-btn" onclick="selectDiaEm(this, 17)"><span class="num">17</span>VIE</button>
+    <button class="dia-btn" onclick="selectDiaEm(this, 18)"><span class="num">18</span>SÁB</button>
+    <button class="dia-btn" onclick="selectDiaEm(this, 19)"><span class="num">19</span>DOM</button>
+  </div>
+
+  <div class="section-title">CANTIDAD DE RACIONES</div>
+  <div class="cantidad-control">
+    <button class="cant-btn" onclick="cambiarCantidad(-1)">−</button>
+    <div class="cant-display" id="cant-display">1</div>
+    <button class="cant-btn" onclick="cambiarCantidad(1)">+</button>
+  </div>
+
+  <div class="field" style="margin-bottom:20px;">
+    <label>Observaciones (opcional)</label>
+    <textarea id="em-obs" placeholder="Indicaciones especiales..."></textarea>
+  </div>
+
+  <button class="btn-submit" onclick="submitEmpresarial()">CONFIRMAR PEDIDO</button>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="success">
+  <div class="success-icon">✓</div>
+  <div class="success-title">PEDIDO CONFIRMADO</div>
+  <div class="success-msg" id="success-msg">Tu pedido ha sido registrado.<br>El equipo de Konk Kónk lo tiene.</div>
+  <button class="btn-nuevo" onclick="resetForm()">NUEVO PEDIDO</button>
+</div>
+
+<script>
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyMdVV_WjKACuIeTXSrIQWE4PDK-sPjHxnO1ZmIGvIaTDKCOBWQ53l9BEAIKI1qSl08/exec';
+
+  async function enviarASheet(payload) {
+    try {
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch(e) {
+      console.error('Error enviando a Sheet:', e);
+    }
+  }
+
+  // MENÚ DATA
+  const menuAlmuerzo = {
+    13: [
+      { items: ['Cerdito Mechado', 'Morito Guandules', 'Ensaladita Verde'] },
+      { items: ['Pollito Frito', 'Arrocito Blanco', 'Habichuelitas', 'Ensaladita Verde'] },
+      { items: ['Sancochito', 'Arrocito Blanco'] },
+      { items: ['Cerdito Mechado', 'Mangusito Verde'] }
+    ],
+    14: [
+      { items: ['Cerdito Guisado', 'Morito Habichuelas', 'Ensaladita Pasta'] },
+      { items: ['Deditos Pollo BBQ', 'Arrocito Blanco', 'Habichuelitas', 'Ensaladita Pasta'] },
+      { items: ['Clubsito Sandwich', 'Papitas Fritas'] },
+      { items: ['Deditos Pollo BBQ', 'Plátanos Maduros'] }
+    ],
+    15: [
+      { items: ['Pollito Guisado', 'Arrocito Blanco', 'Habichuelitas', 'Ensaladita Verde'] },
+      { items: ['Fajitas Pollo', 'Morito Guandules', 'Maduritos', 'Ensaladita Verde'] },
+      { items: ['Hamburguesita', 'Papitas Fritas'] },
+      { items: ['Fajitas Pollo', 'Puresito Guineo'] }
+    ],
+    16: [
+      { items: ['Locrito de Pollo', 'Guandulitos', 'Maduritos', 'Ensaladita Mixta'] },
+      { items: ['Carnita Molida', 'Arrocito Blanco', 'Guandulitos', 'Ensaladita Mixta'] },
+      { items: ['Chambrecito', 'Arrocito Blanco'] },
+      { items: ['Pollito Guisado', 'Guineitos Hervidos'] }
+    ],
+    17: [
+      { items: ['Cerdito Guisado', 'Arrocito Blanco', 'Habichuelitas', 'Ensaladita Verde'] },
+      { items: ['Chuletitas Fritas', 'Arrocito Blanco', 'Habichuelitas', 'Ensaladita Verde'] },
+      { items: ['Chofancito Dominicano', 'Huevito Frito', 'Platanitos Maduro', 'Ensaladita Verde'] },
+      { items: ['Pechuguita Plancha', 'Mangusito Maduro'] }
+    ],
+    18: [
+      { items: ['Pollito al Caldero', 'Morito Habichuelas', 'Ensaladita Mixta'] },
+      { items: ['Pollito Frito', 'Frititos Maduros', 'Arrocito Maíz', 'Ensaladita Mixta'] },
+      { items: ['Pastita Enchuletada', 'Arrocito Blanco'] },
+      { items: ['Pollito al Caldero', 'Mangusito Verde'] }
+    ],
+    19: [
+      { items: ['Fajitas de Pollo', 'Arrocito Blanco', 'Guandulitos', 'Ensaladita Verde'] },
+      { items: ['Chuletitas BBQ', 'Arrocito Blanco', 'Habichuelitas', 'Ensaladita Verde'] },
+      { items: ['Hamburguesita Pollo', 'Papitas Fritas'] },
+      { items: ['Chuletitas BBQ', 'Guineitos Encebollados'] }
+    ]
+  };
+
+  const menuCena = {
+    13: [
+      { items: ['Chimi Dominicano', 'Papitas'] },
+      { items: ['Mangusito Verde', 'Quesito Frito', 'Salamito Frito'] }
+    ],
+    14: [
+      { items: ['Alitas BBQ', 'Papitas'] },
+      { items: ['Yuquita Mash', 'Jamoncito Frito'] }
+    ],
+    15: [
+      { items: ['Hamburguesita', 'Papitas'] },
+      { items: ['Platanitos Maduros', 'Quesito Frito', 'Salamito Frito'] }
+    ],
+    16: [
+      { items: ['Arepas Venezolanas', 'Pollito Mechado'] },
+      { items: ['Pastita con Salchichitas', 'Pansitos Tostados'] }
+    ],
+    17: [
+      { items: ['Pechurinas', 'Batatica Frita'] },
+      { items: ['Sancochito', 'Arrocito Blanco'] }
+    ],
+    18: [
+      { items: ['Hamburguesitas de Pollo', 'Papitas'] },
+      { items: ['Puresito Guineo', 'Jamoncito Guisado'] }
+    ],
+    19: [
+      { items: ['Perritos Calientes', 'Papitas Fritas'] },
+      { items: ['Mangú Verde', 'Tres Golpes'] }
+    ]
+  };
+
+  const diasNombres = { 13:'Lunes 13', 14:'Martes 14', 15:'Miércoles 15', 16:'Jueves 16', 17:'Viernes 17', 18:'Sábado 18', 19:'Domingo 19' };
+
+  let state = {
+    tipo: 'ejecutivo',
+    servicio: 'almuerzo',
+    dia: null,
+    opcion: null,
+    servicioEm: 'almuerzo',
+    diaEm: null,
+    cantidad: 1
+  };
+
+  function setTipo(tipo) {
+    state.tipo = tipo;
+    document.querySelectorAll('.tipo-btn').forEach((b,i) => b.classList.toggle('active', (i===0 && tipo==='ejecutivo') || (i===1 && tipo==='empresarial')));
+    document.getElementById('sec-ejecutivo').classList.toggle('visible', tipo==='ejecutivo');
+    document.getElementById('sec-empresarial').classList.toggle('visible', tipo==='empresarial');
+    document.getElementById('success').classList.remove('visible');
+  }
+
+  function setServicio(serv, btn) {
+    state.servicio = serv;
+    btn.parentElement.querySelectorAll('.serv-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (state.dia) renderOpciones(state.dia);
+  }
+
+  function setServicioEm(serv, btn) {
+    state.servicioEm = serv;
+    btn.parentElement.querySelectorAll('.serv-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function selectDia(btn, dia) {
+    state.dia = dia;
+    state.opcion = null;
+    document.querySelectorAll('#sec-ejecutivo .dia-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    renderOpciones(dia);
+  }
+
+  function selectDiaEm(btn, dia) {
+    state.diaEm = dia;
+    document.querySelectorAll('#sec-empresarial .dia-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+
+  function renderOpciones(dia) {
+    const menu = state.servicio === 'almuerzo' ? menuAlmuerzo : menuCena;
+    const opciones = menu[dia];
+    const container = document.getElementById('opciones-container');
+
+    if (!opciones || opciones.length === 0) {
+      container.innerHTML = '<div class="no-menu">No hay opciones disponibles para este día.</div>';
+      return;
+    }
+
+    let html = `<div class="opciones-title">Opciones – ${diasNombres[dia]}</div><div class="opciones-grid">`;
+    opciones.forEach((op, i) => {
+      html += `<div class="opcion-card" onclick="selectOpcion(this, ${i+1})">
+        <div class="check-icon">✓</div>
+        <div class="opcion-num">0${i+1}</div>
+        <div class="opcion-items">${op.items.join('<br>')}</div>
+      </div>`;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  function selectOpcion(card, num) {
+    state.opcion = num;
+    document.querySelectorAll('.opcion-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+  }
+
+  function cambiarCantidad(delta) {
+    state.cantidad = Math.max(1, state.cantidad + delta);
+    document.getElementById('cant-display').textContent = state.cantidad;
+  }
+
+  async function submitEjecutivo() {
+    const nombre = document.getElementById('ej-nombre').value.trim();
+    const empresa = document.getElementById('ej-empresa').value.trim();
+    if (!nombre) { alert('Por favor ingresa tu nombre.'); return; }
+    if (!empresa) { alert('Por favor ingresa tu empresa.'); return; }
+    if (!state.dia) { alert('Por favor selecciona un día.'); return; }
+    if (!state.opcion) { alert('Por favor selecciona una opción del menú.'); return; }
+
+    const menu = state.servicio === 'almuerzo' ? menuAlmuerzo : menuCena;
+    const items = menu[state.dia][state.opcion - 1].items.join(', ');
+    const obs = document.getElementById('ej-obs').value.trim();
+
+    await enviarASheet({
+      tipo: 'Ejecutivo',
+      nombre: nombre,
+      empresa: empresa,
+      servicio: state.servicio === 'almuerzo' ? 'Almuerzo' : 'Cena',
+      dia: diasNombres[state.dia],
+      opcion: 'Opción 0' + state.opcion,
+      detalle: items,
+      observaciones: obs
+    });
+
+    document.getElementById('success-msg').innerHTML =
+      `<strong>${nombre}</strong> de ${empresa}<br>
+       ${state.servicio === 'almuerzo' ? 'Almuerzo' : 'Cena'} · ${diasNombres[state.dia]}<br>
+       Opción 0${state.opcion}: ${items}
+       ${obs ? '<br><em>' + obs + '</em>' : ''}`;
+
+    showSuccess();
+  }
+
+  async function submitEmpresarial() {
+    const empresa = document.getElementById('em-empresa').value.trim();
+    const responsable = document.getElementById('em-responsable').value.trim();
+    if (!empresa) { alert('Por favor ingresa la empresa.'); return; }
+    if (!responsable) { alert('Por favor ingresa el nombre del responsable.'); return; }
+    if (!state.diaEm) { alert('Por favor selecciona un día.'); return; }
+    const obs = document.getElementById('em-obs').value.trim();
+
+    await enviarASheet({
+      tipo: 'Empresarial',
+      nombre: responsable,
+      empresa: empresa,
+      servicio: state.servicioEm === 'almuerzo' ? 'Almuerzo' : 'Cena',
+      dia: diasNombres[state.diaEm],
+      opcion: state.cantidad + ' raciones',
+      detalle: 'Menú Empresarial',
+      observaciones: obs
+    });
+
+    document.getElementById('success-msg').innerHTML =
+      `<strong>${empresa}</strong> – Resp: ${responsable}<br>
+       ${state.servicioEm === 'almuerzo' ? 'Almuerzo' : 'Cena'} · ${diasNombres[state.diaEm]}<br>
+       Cantidad: <strong>${state.cantidad} raciones</strong>
+       ${obs ? '<br><em>' + obs + '</em>' : ''}`;
+
+    showSuccess();
+  }
+
+  function showSuccess() {
+    document.getElementById('sec-ejecutivo').classList.remove('visible');
+    document.getElementById('sec-empresarial').classList.remove('visible');
+    document.getElementById('success').classList.add('visible');
+  }
+
+  function resetForm() {
+    document.getElementById('ej-nombre').value = '';
+    document.getElementById('ej-empresa').value = '';
+    document.getElementById('ej-obs').value = '';
+    document.getElementById('em-empresa').value = '';
+    document.getElementById('em-responsable').value = '';
+    document.getElementById('em-obs').value = '';
+    document.getElementById('opciones-container').innerHTML = '<div class="no-menu">Selecciona un día para ver las opciones del menú.</div>';
+    document.querySelectorAll('.dia-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.opcion-card').forEach(b => b.classList.remove('selected'));
+    state.dia = null; state.opcion = null; state.diaEm = null; state.cantidad = 1;
+    document.getElementById('cant-display').textContent = '1';
+    document.getElementById('success').classList.remove('visible');
+    setTipo(state.tipo);
+  }
+</script>
+</body>
+</html>
